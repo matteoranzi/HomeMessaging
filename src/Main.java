@@ -8,7 +8,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("stages/login/loginView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("scenes/login/loginView.fxml"));
         primaryStage.setTitle("HomeMessaging - Login");
         primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root));

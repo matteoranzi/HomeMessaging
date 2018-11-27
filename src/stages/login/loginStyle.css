@@ -1,8 +1,0 @@
-#mainBackground{
-    -fx-background-color: #2D2A36;
-}
-
-#formBackground{
-    -fx-background-color: #42404B;
-    -fx-effect: dropshadow(two-pass-box, black, 30, 0, 0, 0);
-}

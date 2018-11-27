@@ -1,0 +1,28 @@
+#mainAnchorPane{
+    -fx-background-color: #393939;
+}
+
+#formBackground{
+    -fx-background-color: #45474A;
+    -fx-effect: dropshadow(two-pass-box, black, 30, 0, 0, 0);
+}
+
+.text-field{
+    -fx-text-fill: white;
+    -fx-background-color: #393939;
+    -fx-background-radius: 50;
+}
+
+.button{
+    -fx-background-color: #0092DF;
+    -fx-text-fill: white;
+    -fx-background-radius: 50;
+}
+
+.button:hover{
+    -fx-background-color: #0099e9;
+}
+
+.button:pressed{
+    -fx-background-color: #0089d2;
+}

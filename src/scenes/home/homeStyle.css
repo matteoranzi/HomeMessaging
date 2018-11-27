@@ -1,0 +1,16 @@
+.split-pane{
+    -fx-box-border: transparent;
+    -fx-padding: 0;
+}
+
+.split-pane-divider{
+    -fx-background-color: #393939;
+}
+
+#clientListListView{
+    -fx-background-color: #393939;
+}
+
+#clientChatListView{
+    -fx-background-color: #45474A;
+}
