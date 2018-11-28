@@ -14,3 +14,24 @@
 #clientChatListView{
     -fx-background-color: #45474A;
 }
+
+.text-field{
+    -fx-text-fill: white;
+    -fx-background-color: #393939;
+    -fx-background-radius: 50;
+}
+
+.button{
+    -fx-background-color: #0092DF;
+    -fx-text-fill: white;
+    -fx-background-radius: 50;
+    -fx-padding: 0;
+}
+
+.button:hover{
+    -fx-background-color: #0099e9;
+}
+
+.button:pressed{
+    -fx-background-color: #0089d2;
+}
