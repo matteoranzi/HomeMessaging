@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -11,11 +12,15 @@
          <children>
             <TextField id="usernameLabel" fx:id="usernameTextField" layoutX="53.0" layoutY="40.0" prefHeight="35.0" prefWidth="266.0" promptText="Username" stylesheets="@loginStyle.css" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="40.0" />
             <TextField id="chatCodeLabel" layoutX="60.0" layoutY="88.0" prefHeight="35.0" prefWidth="266.0" promptText="Chat code (optional)" stylesheets="@loginStyle.css" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="88.0" />
-            <Button fx:id="loginButton" layoutX="40.0" layoutY="147.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="324.0" text="Login to HomeMassaging" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Button>
+            <JFXButton fx:id="loginButton" alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="35.0" layoutY="162.0" prefHeight="35.0" prefWidth="344.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
+               <graphic>
+                  <Label text="Login to HomeMessaging" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </graphic>
+            </JFXButton>
          </children></AnchorPane>
    </children>
 </AnchorPane>

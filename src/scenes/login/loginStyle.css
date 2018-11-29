@@ -18,11 +18,3 @@
     -fx-text-fill: white;
     -fx-background-radius: 50;
 }
-
-.button:hover{
-    -fx-background-color: #0099e9;
-}
-
-.button:pressed{
-    -fx-background-color: #0089d2;
-}

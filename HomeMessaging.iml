@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="fontawesomefx-materialicons-2.2.0-9" level="project" />
     <orderEntry type="library" name="fontawesomefx-commons-9.0.0" level="project" />
+    <orderEntry type="library" name="jfoenix-9.0.6" level="project" />
   </component>
 </module>
