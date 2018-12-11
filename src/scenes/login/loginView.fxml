@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="mainAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="353.0" prefWidth="643.0" stylesheets="@loginStyle.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scenes.login.LoginController">
+<AnchorPane id="mainAnchorPane" fx:id="mainAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="353.0" prefWidth="643.0" stylesheets="@loginStyle.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scenes.login.LoginController">
    <children>
       <AnchorPane id="formBackground" layoutX="153.0" layoutY="78.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="120.0" AnchorPane.topAnchor="70.0">
          <children>
-            <TextField id="usernameLabel" fx:id="usernameTextField" layoutX="53.0" layoutY="40.0" prefHeight="35.0" prefWidth="266.0" promptText="Username" stylesheets="@loginStyle.css" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="40.0" />
-            <TextField id="chatCodeLabel" layoutX="60.0" layoutY="88.0" prefHeight="35.0" prefWidth="266.0" promptText="Chat code (optional)" stylesheets="@loginStyle.css" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="88.0" />
-            <JFXButton fx:id="loginButton" alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="35.0" layoutY="162.0" prefHeight="35.0" prefWidth="344.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
+            <JFXButton fx:id="loginButton" alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="35.0" layoutY="162.0" onAction="#handleLoginButtonAction" prefHeight="35.0" prefWidth="344.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
                <graphic>
                   <Label text="Login to HomeMessaging" textFill="WHITE">
                      <font>
@@ -21,6 +20,16 @@
                   </Label>
                </graphic>
             </JFXButton>
+            <JFXTextField fx:id="usernameJFXTextField" focusColor="WHITE" layoutX="65.0" layoutY="19.0" prefHeight="35.0" promptText="Username" unFocusColor="#45474a" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="30.0">
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </JFXTextField>
+            <JFXTextField fx:id="chatCodeJFXTextField" focusColor="WHITE" layoutX="58.0" layoutY="74.0" prefHeight="35.0" promptText="Chat Code (Optional)" unFocusColor="#45474a" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="90.0">
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </JFXTextField>
          </children></AnchorPane>
    </children>
 </AnchorPane>

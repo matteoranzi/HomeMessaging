@@ -1,10 +1,22 @@
 package scenes.login;
 
-import javafx.application.Platform;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RequiredFieldValidator;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import scenes.home.HomeController;
+import utils.Log;
+
+import java.io.IOException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,11 +25,68 @@ import javafx.scene.control.TextField;
  * Time: 0.20
  */
 public class LoginController {
-    @FXML private TextField usernameTextField;
+    public static final String WINDOW_TITLE = "HomeMessaging - Login";
+
+    @FXML private JFXTextField usernameJFXTextField;
+    @FXML private JFXTextField chatCodeJFXTextField;
     @FXML private Button loginButton;
+    @FXML private AnchorPane mainAnchorPane;
+
+    private Log log;
+
+    public LoginController(){
+        log = new Log(this.getClass(), Log.DEBUG);
+    }
 
     @FXML private void initialize(){
-        Platform.runLater(() -> loginButton.requestFocus());
+        RequiredFieldValidator requiredFieldValidator = new RequiredFieldValidator();
+        requiredFieldValidator.setMessage("Username cannot be empty");
+
+        usernameJFXTextField.getValidators().add(requiredFieldValidator);
+
+        addListeners();
+    }
+
+    @FXML private void handleLoginButtonAction(ActionEvent event) throws IOException {
+        usernameJFXTextField.validate();
+
+        if(usernameJFXTextField.getText().equals("")){
+            log.debug("username text empty");
+        }else{
+            FXMLLoader homeControllerLoader = new FXMLLoader(getClass().getResource("../home/homeView.fxml"));
+            Parent homeControllerRoot = homeControllerLoader.load();//TODO handle exception
+
+            HomeController homeController = homeControllerLoader.getController();
+
+            Stage homeControllerStage = new Stage();
+            homeController.initializeClass(homeControllerStage, usernameJFXTextField.getText(), chatCodeJFXTextField.getText());
+            homeControllerStage.setScene(new Scene(homeControllerRoot));
+            homeControllerStage.setTitle(HomeController.WINDOW_TITLE);
+            homeControllerStage.setResizable(false);
+            homeControllerStage.show();
+
+            //Close current window
+            ((Stage)((Node) event.getSource()).getScene().getWindow()).close();
+        }
+    }
+
+    private void addListeners(){
+        usernameJFXTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (!newValue) {
+                usernameJFXTextField.validate();
+            }
+        });
+
+        JFXTextFieldInputValidation(usernameJFXTextField);
+        JFXTextFieldInputValidation(chatCodeJFXTextField);
+    }
+
+    private void JFXTextFieldInputValidation(JFXTextField textField){
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[!@#$%^&*(),.?\":{}|<> ]") || !oldValue.matches("[!@#$%^&*(),.?\":{}|<> ]")) {//Remove all special characters
+                textField.setText(newValue.replaceAll("[!@#$%^&*(),.?\":{}|<> ]", ""));
+            }
+        });
     }
 
 }

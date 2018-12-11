@@ -3,15 +3,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import scenes.login.LoginController;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("scenes/login/loginView.fxml"));
-        primaryStage.setTitle("HomeMessaging - Login");
+        primaryStage.setTitle(LoginController.WINDOW_TITLE);
         primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

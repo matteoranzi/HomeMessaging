@@ -1,24 +1,22 @@
-.split-pane{
-    -fx-box-border: transparent;
-    -fx-padding: 0;
-}
-
-.split-pane-divider{
+#availableUsersListView{
     -fx-background-color: #393939;
-}
-
-#clientListListView{
-    -fx-background-color: #393939;
-}
-
-#clientChatListView{
-    -fx-background-color: #45474A;
-}
-
-.text-field{
+    -fx-control-inner-background: #393939;
     -fx-text-fill: white;
+}
+
+
+#userChatListView{
+    -fx-background-color: #45474A;
+    -fx-control-inner-background: #45474A;
+    -fx-text-fill: white;
+}
+
+.jfx-text-area{
+    -fx-text-inner-color: white;
     -fx-background-color: #393939;
+    -fx-text-alignment: center;
     -fx-background-radius: 50;
+    -fx-prompt-text-fill: #919191;
 }
 
 .button{

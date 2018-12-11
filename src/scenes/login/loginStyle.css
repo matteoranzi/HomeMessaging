@@ -8,6 +8,7 @@
 }
 
 .text-field{
+    -fx-prompt-text-fill: #AAAAAA;
     -fx-text-fill: white;
     -fx-background-color: #393939;
     -fx-background-radius: 50;
@@ -17,4 +18,8 @@
     -fx-background-color: #0092DF;
     -fx-text-fill: white;
     -fx-background-radius: 50;
+}
+
+#alertLabel{
+    -fx-text-fill: #ff3226;
 }
