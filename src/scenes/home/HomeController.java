@@ -5,10 +5,12 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import models.chat.Chat;
 import models.chat.ChatsList;
@@ -26,6 +28,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import models.user.User;
 import models.user.UsersList;
+
+import java.io.File;
 
 /**
  * Created by IntelliJ IDEA.
@@ -48,6 +52,10 @@ public class HomeController {
 
     private Chat currentOpenedChat;
 
+    private FileChooser fileChooser;
+    private File file;
+    private File storedFileDirectory;
+
     private Stage stage;
 
     @FXML private ListView<String> availableUsersListView;
@@ -65,6 +73,8 @@ public class HomeController {
     @FXML private BorderPane fileBorderPane;
     @FXML private BorderPane messageBorderPane;
 
+    //TODO send message to all
+    //TODO disable sendFileButton when host unreachable
 
 
     @FXML private void initialize(){
@@ -76,6 +86,15 @@ public class HomeController {
 
     @FXML private void handleSendFileButtonAction(ActionEvent event){
         log.debug("choose file");
+
+        if(this.file != null){
+            fileChooser.setInitialDirectory(this.file.getAbsoluteFile().getParentFile());
+        }
+        File tmpFile = fileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());//or use «new Stage()» ?
+        if(tmpFile != null){
+            this.file = tmpFile;
+            log.debug("Selected file: " + file.getAbsolutePath());
+        }
     }
 
     @FXML private void handleSendMessageButtonAction(ActionEvent event){
@@ -176,6 +195,7 @@ public class HomeController {
 
         usernameAtChatCodeLabel.setText(localUser.getUsername() + "@" + localUser.getChatCode());
 
+        fileChooser = new FileChooser();
 
         usersList = new UsersList();
         chatsList = new ChatsList();
@@ -228,6 +248,7 @@ public class HomeController {
         Platform.runLater(() -> {
             messageJFXTextArea.setDisable(e);
             sendMessageButton.setDisable(e);
+            sendFileButton.setDisable(e);
         });
     }
 

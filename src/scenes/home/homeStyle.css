@@ -20,16 +20,18 @@
 }
 
 .button{
-    -fx-background-color: #0092DF;
+    -fx-background-color: #ff7400;/*0092df*/
     -fx-text-fill: white;
     -fx-background-radius: 50;
     -fx-padding: 0;
 }
 
+/*
 .button:hover{
-    -fx-background-color: #0099e9;
+    -fx-background-color: #ed7b05;
 }
 
 .button:pressed{
-    -fx-background-color: #0089d2;
+    -fx-background-color: #de7005;
 }
+*/

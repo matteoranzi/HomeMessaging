@@ -2,6 +2,7 @@ package scenes.login;
 
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -44,14 +45,19 @@ public class LoginController {
 
         usernameJFXTextField.getValidators().add(requiredFieldValidator);
 
+        Platform.runLater(() -> {
+            usernameJFXTextField.requestFocus();
+        });
+
         addListeners();
     }
 
     @FXML private void handleLoginButtonAction(ActionEvent event) throws IOException {
-        usernameJFXTextField.validate();
 
-        if(usernameJFXTextField.getText().equals("")){
+
+        if(!usernameJFXTextField.validate()){
             log.debug("username text empty");
+            usernameJFXTextField.requestFocus();
         }else{
             FXMLLoader homeControllerLoader = new FXMLLoader(getClass().getResource("../home/homeView.fxml"));
             Parent homeControllerRoot = homeControllerLoader.load();//TODO handle exception
