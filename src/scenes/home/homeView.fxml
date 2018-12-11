@@ -82,7 +82,6 @@
                               <Font size="12.0" />
                            </font>
                         </JFXTextArea>
-                        <ListView id="userChatListView" fx:id="messagesListView" minHeight="0.0" minWidth="0.0" prefHeight="317.0" prefWidth="530.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         <BorderPane fx:id="fileBorderPane" prefHeight="40.0" prefWidth="40.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
                            <center>
                               <JFXButton fx:id="sendFileButton" onAction="#handleSendFileButtonAction" prefHeight="40.0" prefWidth="40.0" text="" BorderPane.alignment="CENTER">
@@ -92,6 +91,11 @@
                               </JFXButton>
                            </center>
                         </BorderPane>
+                        <AnchorPane id="speechContainerAnchorPane" fx:id="speechContainerAnchorPane" prefHeight="360.0" prefWidth="530.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <padding>
+                              <Insets left="5.0" right="5.0" top="20.0" />
+                           </padding>
+                        </AnchorPane>
                      </children>
                   </AnchorPane>
                </children>

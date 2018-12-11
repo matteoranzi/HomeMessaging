@@ -1,9 +1,8 @@
 package scenes.home;
 
 import com.jfoenix.controls.JFXTextArea;
+import customNodes.ConversationView;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -57,9 +56,9 @@ public class HomeController {
     private File storedFileDirectory;
 
     private Stage stage;
+    private ConversationView conversationView;
 
     @FXML private ListView<String> availableUsersListView;
-    @FXML private ListView<String> messagesListView;
     @FXML private Button sendMessageButton;
     @FXML private Button sendFileButton;
     @FXML private JFXTextArea messageJFXTextArea;
@@ -72,9 +71,11 @@ public class HomeController {
     @FXML private AnchorPane mainAnchorPane;
     @FXML private BorderPane fileBorderPane;
     @FXML private BorderPane messageBorderPane;
+    @FXML private AnchorPane speechContainerAnchorPane;
 
     //TODO send message to all
     //TODO disable sendFileButton when host unreachable
+    //TODO save the conversationView instead to instantiate new one each time (in order to simply add the new message instead to add the old ones too)
 
 
     @FXML private void initialize(){
@@ -102,7 +103,7 @@ public class HomeController {
         if(!messageJFXTextArea.getText().equals("")){//send the message only if there is text inside the text area
             Message message = new TextMessage(localUser.getID(), messageJFXTextArea.getText(), MessageType.SENT);
             currentOpenedChat.addMessage(message);
-            addMessageListView(message);
+            addMessageToSpeech(message);
 
             messagesManager.sendMessage(currentOpenedChat.getUser(), message);
 
@@ -116,20 +117,20 @@ public class HomeController {
         chat.addMessage(message);
 
         if(currentOpenedChat == chat){
-            addMessageListView(message);
+            addMessageToSpeech(message);
         }else{
             chat.incrementNotificationCounter();
             updateAvailableUserListView();
         }
     }
 
-    private void addMessageListView(Message message){
+    private void addMessageToSpeech(Message message){
         Platform.runLater(() -> {
             if(message.getMessageType() == MessageType.RECEIVED){
-                messagesListView.getItems().add("RECEIVED --> " + message.getText());
+                conversationView.receiveMessage(message.getText());
 
             }else{
-                messagesListView.getItems().add("SENT --> " + message.getText());
+                conversationView.sendMessage(message.getText());
             }
         });
     }
@@ -160,11 +161,24 @@ public class HomeController {
         });
     }
 
+    private void clearConversationView(){
+        speechContainerAnchorPane.getChildren().remove(conversationView);
+        conversationView = new ConversationView();
+
+        AnchorPane.setTopAnchor(conversationView, 0.0);
+        AnchorPane.setLeftAnchor(conversationView, 0.0);
+        AnchorPane.setRightAnchor(conversationView, 0.0);
+        AnchorPane.setBottomAnchor(conversationView, 0.0);
+        speechContainerAnchorPane.getChildren().add(conversationView);
+    }
+
     private void updateMessagesListView(Chat chat){
         Platform.runLater(() -> {
-            messagesListView.getItems().clear();
+            //Clear the speech changing it
+            clearConversationView();
+
             for(Message message: chat.getMessages()){
-                addMessageListView(message);
+                addMessageToSpeech(message);
             }
         });
     }
@@ -196,6 +210,8 @@ public class HomeController {
         usernameAtChatCodeLabel.setText(localUser.getUsername() + "@" + localUser.getChatCode());
 
         fileChooser = new FileChooser();
+
+        clearConversationView();
 
         usersList = new UsersList();
         chatsList = new ChatsList();
