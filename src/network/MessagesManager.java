@@ -14,6 +14,8 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Created by IntelliJ IDEA.
@@ -64,7 +66,7 @@ public class MessagesManager implements Runnable{
         t.start();
     }
 
-    public void sendMessage(User destinationUser, Message message){
+    public void sendTextMessage(User destinationUser, Message message){
         Thread t = new Thread(() -> {
             try {
                 Socket socket = new Socket(destinationUser.getIp(), AppParameters.TCP_WRITING_SERVER_PORT);
@@ -74,6 +76,25 @@ public class MessagesManager implements Runnable{
                 oos.flush();
 
             } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        t.setDaemon(true);
+        t.start();
+    }
+
+    //TODO update progressionBar
+    public void sendFileMessage(User destinationUser, Message message, String filePath){
+        Thread t = new Thread(() -> {
+            try{
+                Socket socket = new Socket(destinationUser.getIp(), AppParameters.TCP_WRITING_SERVER_PORT);
+                ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                oos.writeObject(message);
+                oos.flush();
+
+                FileSender fileSender = new FileSender(socket, filePath);
+                fileSender.start();
+            }catch (IOException e){
                 e.printStackTrace();
             }
         });
@@ -106,11 +127,33 @@ public class MessagesManager implements Runnable{
                     handleTextMessage((TextMessage) message);
                 }else if(message instanceof LogOutMessage){
                     handleLogOutMessage((LogOutMessage) message);
+                }else if(message instanceof FileMessage){
+                    handleFileMessage((FileMessage) message);
                 }
 
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
+        }
+
+        //TODO update progressionBar
+        private void handleFileMessage(FileMessage message){
+            User user = homeController.getUsersList().getUserByID(message.getSourceUserID());
+            if(user == UsersList.NO_USER_FOUND){
+                log.error("No user found in usersList");
+            }else{
+                homeController.addReceivedMessage(user, message);
+                FileReceiver fileReceiver= new FileReceiver(socket, getPathForFile(message), message.getText());
+                fileReceiver.start();
+            }
+        }
+
+        private String getPathForFile(Message message){
+            String user = homeController.getUsersList().getUserByID(message.getSourceUserID()).getUsername();
+            String path =  Paths.get(System.getProperty("user.home"), AppParameters.APP_NAME, user).toString();
+            log.debug("Create path for received file" + path);
+
+            return path;
         }
 
         private void handleLogOutMessage(LogOutMessage message){

@@ -10,27 +10,17 @@ import java.io.Serializable;
  * Date: 10/12/18
  * Time: 13.58
  */
-public class HelloResponseMessage implements Message, Serializable {
-    private MessageType messageType;
+public class HelloResponseMessage extends Message {
     private User user;
-    public HelloResponseMessage(User user, MessageType messageType){
-        this.user = user;
-        this.messageType = messageType;
-    }
 
-    @Override
-    public void setMessageType(MessageType messageType) {
-        this.messageType = messageType;
+    public HelloResponseMessage(User user, MessageType messageType){
+        super(user.getID(), messageType);
+        this.user = user;
     }
 
     @Override
     public String getText() {
         return "Connected user: " + user.getUsername();
-    }
-
-    @Override
-    public MessageType getMessageType() {
-        return messageType;
     }
 
     public User getUser() {

@@ -9,14 +9,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import models.chat.Chat;
 import models.chat.ChatsList;
-import models.messages.LogOutMessage;
-import models.messages.Message;
-import models.messages.MessageType;
-import models.messages.TextMessage;
+import models.messages.*;
 import models.user.Status;
 import network.HelloListener;
 import network.HelloMessageSender;
@@ -74,8 +72,13 @@ public class HomeController {
     @FXML private AnchorPane speechContainerAnchorPane;
 
     //TODO send message to all
-    //TODO disable sendFileButton when host unreachable
     //TODO save the conversationView instead to instantiate new one each time (in order to simply add the new message instead to add the old ones too)
+    //TODO nice user list GUI
+    /*
+    avatarImageView.setImage(new Image("file:/home/matteoranzi/Scaricati/square1.png"));
+    avatarImageView.setClip(new Circle(35, 35, 30));
+    */
+
 
 
     @FXML private void initialize(){
@@ -95,17 +98,25 @@ public class HomeController {
         if(tmpFile != null){
             this.file = tmpFile;
             log.debug("Selected file: " + file.getAbsolutePath());
+
+            Message message = new FileMessage(localUser.getID(), this.file.getName(), MessageType.SENT);
+            currentOpenedChat.addMessage(message);
+            addMessageToSpeech(message);
+
+            messagesManager.sendFileMessage(currentOpenedChat.getUser(), message, this.file.getAbsolutePath());
+
+            messageJFXTextArea.requestFocus();
         }
     }
 
     @FXML private void handleSendMessageButtonAction(ActionEvent event){
-        //TODO manage "Enter" button to send message and "Ctrl + Button" to new line
+        //TODO manage "Ctrl + Enter" button to send message and "Button" to new line
         if(!messageJFXTextArea.getText().equals("")){//send the message only if there is text inside the text area
             Message message = new TextMessage(localUser.getID(), messageJFXTextArea.getText(), MessageType.SENT);
             currentOpenedChat.addMessage(message);
             addMessageToSpeech(message);
 
-            messagesManager.sendMessage(currentOpenedChat.getUser(), message);
+            messagesManager.sendTextMessage(currentOpenedChat.getUser(), message);
 
             messageJFXTextArea.setText("");//clear the content
             messageJFXTextArea.requestFocus();
@@ -127,10 +138,18 @@ public class HomeController {
     private void addMessageToSpeech(Message message){
         Platform.runLater(() -> {
             if(message.getMessageType() == MessageType.RECEIVED){
-                conversationView.receiveMessage(message.getText());
+                if(message instanceof TextMessage){
+                    conversationView.addReceivedTextMessage(message.getText());
+                }else if(message instanceof FileMessage){
+                    conversationView.addReceivedFileMessage(message.getText());
+                }
 
             }else{
-                conversationView.sendMessage(message.getText());
+                if(message instanceof TextMessage){
+                    conversationView.addSentTextMessage(message.getText());
+                }else if(message instanceof FileMessage){
+                    conversationView.addSentFileMessage(message.getText());
+                }
             }
         });
     }
@@ -138,10 +157,13 @@ public class HomeController {
     //TODO update single cell
     private void updateAvailableUserListView(){
         Platform.runLater(() -> {
-            noUserAvailableAnchorPane.setVisible(false);
-            usersAvailableAnchorPane.setVisible(true);
+            if(!usersAvailableAnchorPane.isVisible()){
+                noUserAvailableAnchorPane.setVisible(false);
+                usersAvailableAnchorPane.setVisible(true);
+            }
 
-            availableUsersListView.getItems().clear();
+
+            availableUsersListView.getItems().clear();//This causes GUI bug
 
             for(User user: usersList.getUsers()){
                 Chat chat = chatsList.getChat(user);
@@ -231,7 +253,7 @@ public class HomeController {
             for(User user: usersList.getUsers()){
                 if(user.getStatus() == Status.REACHABLE){
                     log.debug("LogOutMessage to: " + user.getUsername());
-                    messagesManager.sendMessage(user, new LogOutMessage(localUser.getID(), MessageType.SENT));
+                    messagesManager.sendTextMessage(user, new LogOutMessage(localUser.getID(), MessageType.SENT));
                 }
             }
         });
@@ -272,25 +294,31 @@ public class HomeController {
         availableUsersListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             int i = availableUsersListView.getSelectionModel().getSelectedIndex();
             if(i >= 0){
-                log.debug("Selected User: " + usersList.getUser(i).getUsername());
+                if(currentOpenedChat == null || usersList.getUser(i) != currentOpenedChat.getUser()) { //avoid to re-open the current chat
+                    log.debug("Selected User: " + usersList.getUser(i).getUsername());
 
-                noChatSelectedAnchorPane.setVisible(false);
-                chatSelectedAnchorPane.setVisible(true);
+                    Platform.runLater(() -> {
+                        noChatSelectedAnchorPane.setVisible(false);
+                        chatSelectedAnchorPane.setVisible(true);
+                    });
 
-                User user = usersList.getUser(i);
-                if(user.getStatus() == Status.UNREACABLE){
-                    disableSendMessagesInterface(true);
-                }else{
-                    disableSendMessagesInterface(false);
+                    User user = usersList.getUser(i);
+                    if(user.getStatus() == Status.UNREACABLE){
+                        disableSendMessagesInterface(true);
+                    }else{
+                        disableSendMessagesInterface(false);
+                    }
+
+                    currentOpenedChat = chatsList.getChat(user);
+                    currentOpenedChat.resetNotificationCounter();
+
+                    Platform.runLater(() -> {
+                        userChatLabel.setText(user.getUsername());
+                    });
+
+                    updateMessagesListView(currentOpenedChat);
+                    updateAvailableUserListView();
                 }
-
-                currentOpenedChat = chatsList.getChat(user);
-                currentOpenedChat.resetNotificationCounter();
-
-                userChatLabel.setText(user.getUsername());
-
-                updateMessagesListView(currentOpenedChat);
-                updateAvailableUserListView();
             }
         });
 

@@ -12,7 +12,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import scenes.home.HomeController;
 import utils.Log;
@@ -60,7 +63,7 @@ public class LoginController {
             usernameJFXTextField.requestFocus();
         }else{
             FXMLLoader homeControllerLoader = new FXMLLoader(getClass().getResource("../home/homeView.fxml"));
-            Parent homeControllerRoot = homeControllerLoader.load();//TODO handle exception
+            Parent homeControllerRoot = homeControllerLoader.load();
 
             HomeController homeController = homeControllerLoader.getController();
 

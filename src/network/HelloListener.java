@@ -88,7 +88,7 @@ public class HelloListener implements Runnable {
             log.debug("New host ID -> " + receivedID.replace("\n", "") + " while my ID -> " + localUser.getID());
 
             //if the packet isn't mine then create the connection
-            if(!receivedID.equals(localUser.getID())){//TODO check if the host isn't already present
+            if(!receivedID.equals(localUser.getID())){
                 log.debug("This isn't me");
                 sendHelloResponse(datagramPacket.getAddress());
             }

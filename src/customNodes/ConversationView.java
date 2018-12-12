@@ -1,5 +1,8 @@
 package customNodes;
 
+import customNodes.SpeechBox.FileSpeechBox;
+import customNodes.SpeechBox.SpeechDirection;
+import customNodes.SpeechBox.TextSpeechBox;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -53,13 +56,21 @@ public class ConversationView extends AnchorPane {
         });
     }
 
-    public void sendMessage(String message){
+    public void addSentTextMessage(String message){
         log.debug("Adding right message");
-        speechBubbles.add(new SpeechBox(message, SpeechDirection.RIGHT));
+        speechBubbles.add(new TextSpeechBox(message, SpeechDirection.RIGHT));
     }
 
-    public void receiveMessage(String message){
+    public void addReceivedTextMessage(String message){
         log.debug("Adding left message");
-        speechBubbles.add(new SpeechBox(message, SpeechDirection.LEFT));
+        speechBubbles.add(new TextSpeechBox(message, SpeechDirection.LEFT));
+    }
+
+    public void addSentFileMessage(String fileName){
+        speechBubbles.add(new FileSpeechBox(fileName, SpeechDirection.RIGHT));
+    }
+
+    public void addReceivedFileMessage(String filename){
+        speechBubbles.add(new FileSpeechBox(filename, SpeechDirection.LEFT));
     }
 }
