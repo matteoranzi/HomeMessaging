@@ -73,3 +73,12 @@
 .scroll-bar:vertical{
     -fx-background-color: transparent;
 }
+
+.list-view{
+    -fx-selection-bar: #505050;
+    -fx-selection-bar-non-focused: #505050;
+}
+
+.list-cell:hover{
+    -fx-selection-bar: #454545;
+}

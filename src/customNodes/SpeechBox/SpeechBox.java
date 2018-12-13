@@ -3,7 +3,6 @@ package customNodes.SpeechBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -19,7 +18,7 @@ import javafx.scene.shape.SVGPath;
  */
 public abstract class SpeechBox extends HBox {
     protected Color DEFAULT_SENDER_COLOR = Color.valueOf("#FFFFFF");
-    protected Color DEFAULT_RECEIVER_COLOR = Color.valueOf("#FFBA44");
+    protected Color DEFAULT_RECEIVER_COLOR = Color.valueOf("#ffa625");
     protected Background DEFAULT_SENDER_BACKGROUND, DEFAULT_RECEIVER_BACKGROUND;
 
     protected SpeechDirection direction;

@@ -2,14 +2,16 @@ package scenes.home;
 
 import com.jfoenix.controls.JFXTextArea;
 import customNodes.ConversationView;
+import customNodes.UserListCell;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import models.chat.Chat;
@@ -56,7 +58,7 @@ public class HomeController {
     private Stage stage;
     private ConversationView conversationView;
 
-    @FXML private ListView<String> availableUsersListView;
+    @FXML private ListView<User> availableUsersListView;
     @FXML private Button sendMessageButton;
     @FXML private Button sendFileButton;
     @FXML private JFXTextArea messageJFXTextArea;
@@ -73,11 +75,6 @@ public class HomeController {
 
     //TODO send message to all
     //TODO save the conversationView instead to instantiate new one each time (in order to simply add the new message instead to add the old ones too)
-    //TODO nice user list GUI
-    /*
-    avatarImageView.setImage(new Image("file:/home/matteoranzi/Scaricati/square1.png"));
-    avatarImageView.setClip(new Circle(35, 35, 30));
-    */
 
 
 
@@ -163,7 +160,7 @@ public class HomeController {
             }
 
 
-            availableUsersListView.getItems().clear();//This causes GUI bug
+            //availableUsersListView.getItems().clear();//This causes GUI bug
 
             for(User user: usersList.getUsers()){
                 Chat chat = chatsList.getChat(user);
@@ -174,13 +171,23 @@ public class HomeController {
                     s = "[R] ";
                 }
 
+                /*
                 if(chat.getNotificationCounter() > 0){
                     availableUsersListView.getItems().add(s + user.getUsername() + " - " + chat.getNotificationCounter());
                 }else{
                     availableUsersListView.getItems().add(s + user.getUsername());
-                }
+                }*/
+
+                setUserListCell(user);
             }
         });
+    }
+
+    private void setUserListCell(User user){
+        ObservableList<User> users = FXCollections.observableList(usersList.getUsers());
+        availableUsersListView.setItems(users);
+        availableUsersListView.setCellFactory(new UserListCell(this));
+
     }
 
     private void clearConversationView(){
@@ -331,6 +338,10 @@ public class HomeController {
                 fileBorderPane.setVisible(false);
             }
         });
+    }
+
+    public ChatsList getChatsList(){
+        return chatsList;
     }
 
     public UsersList getUsersList(){

@@ -9,9 +9,9 @@ package utils;
 public class AppParameters {
     public static final String APP_NAME = "HomeMessaging";
 
-    public static final int TCP_LISTENING_SERVER_PORT = 50021;
-    public static final int TCP_WRITING_SERVER_PORT = 50022;
+    public static final int TCP_LISTENING_SERVER_PORT = 50011;
+    public static final int TCP_WRITING_SERVER_PORT = 50012;
 
-    public static final int UDP_LISTENING_SERVER_PORT = 50023;
-    public static final int UDP_WRITING_SERVER_PORT = 50024;
+    public static final int UDP_LISTENING_SERVER_PORT = 50013;
+    public static final int UDP_WRITING_SERVER_PORT = 50014;
 }

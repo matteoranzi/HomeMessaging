@@ -56,26 +56,42 @@ public class LoginController {
     }
 
     @FXML private void handleLoginButtonAction(ActionEvent event) throws IOException {
-
-
         if(!usernameJFXTextField.validate()){
             log.debug("username text empty");
             usernameJFXTextField.requestFocus();
         }else{
-            FXMLLoader homeControllerLoader = new FXMLLoader(getClass().getResource("../home/homeView.fxml"));
-            Parent homeControllerRoot = homeControllerLoader.load();
+            //Thread used to avoid ripple effect from lagging
+            Thread t = new Thread(() -> {
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
-            HomeController homeController = homeControllerLoader.getController();
+                Platform.runLater(() -> {
 
-            Stage homeControllerStage = new Stage();
-            homeController.initializeClass(homeControllerStage, usernameJFXTextField.getText(), chatCodeJFXTextField.getText());
-            homeControllerStage.setScene(new Scene(homeControllerRoot));
-            homeControllerStage.setTitle(HomeController.WINDOW_TITLE);
-            homeControllerStage.setResizable(false);
-            homeControllerStage.show();
+                    try {
+                        FXMLLoader homeControllerLoader = new FXMLLoader(getClass().getResource("/scenes/home/homeView.fxml"));
+                        Parent homeControllerRoot = homeControllerRoot = homeControllerLoader.load();
 
-            //Close current window
-            ((Stage)((Node) event.getSource()).getScene().getWindow()).close();
+                        HomeController homeController = homeControllerLoader.getController();
+
+                        Stage homeControllerStage = new Stage();
+                        homeController.initializeClass(homeControllerStage, usernameJFXTextField.getText(), chatCodeJFXTextField.getText());
+                        homeControllerStage.setScene(new Scene(homeControllerRoot));
+                        homeControllerStage.setTitle(HomeController.WINDOW_TITLE);
+                        homeControllerStage.setResizable(false);
+                        homeControllerStage.show();
+
+                        //Close current window
+                        ((Stage)((Node) event.getSource()).getScene().getWindow()).close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            });
+            t.setDaemon(true);
+            t.start();
         }
     }
 
