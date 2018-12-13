@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import scenes.login.LoginController;
 
+//TODO check lifeCycle of all threads
 public class Main extends Application {
 
     @Override
